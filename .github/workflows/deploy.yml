@@ -11,7 +11,8 @@ jobs:
 
     environment: "${{ 
       fromJson('{
-        \"main\": \"prod\", 
+        \"main\": \"prod\",
+        \"dev\": \"dev\"
       }')[github.ref_name] 
     }}"
 
