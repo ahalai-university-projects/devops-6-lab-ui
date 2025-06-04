@@ -1,0 +1,28 @@
+.apartments-list-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sort-btn {
+  background-color: #275aa7;
+}
+
+.sort-options-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input:hover {
+  cursor: pointer;
+}
+
+select:hover {
+  cursor: pointer;
+}
+
+option:hover {
+  cursor: pointer;
+}
