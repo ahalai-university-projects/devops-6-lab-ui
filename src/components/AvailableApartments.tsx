@@ -1,7 +1,7 @@
 import FilterForm from "./FilterForm";
 import ApartmentsList from "./ApartmentsList";
 import "./../style/AvailableApartments.css";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState,  useCallback } from "react";
 
 interface IAvailableApartments {
   apartments: any;
