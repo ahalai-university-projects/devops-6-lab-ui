@@ -1,7 +1,7 @@
 import FilterForm from "./FilterForm";
 import ApartmentsList from "./ApartmentsList";
 import "./../style/AvailableApartments.css";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState,  useCallback } from "react";
 
 interface IAvailableApartments {
   apartments: any;
@@ -14,6 +14,8 @@ export default function AvailableApartments({
   setApartments,
   fetchApartments,
 }: IAvailableApartments) {
+
+  const a = eval("2 + 2");
 
   const handleSubmit = useCallback((apartments: any) => {
     setApartments(apartments);
