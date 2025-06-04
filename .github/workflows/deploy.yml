@@ -55,7 +55,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: test, lint, semgrep
+    needs: [test, lint, semgrep]
 
     environment: "${{ 
       fromJson('{
