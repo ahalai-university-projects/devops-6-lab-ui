@@ -15,7 +15,7 @@ export default function ApartmentManager() {
 
   return (
     <>
-      <h1>Apartments Marketplace</h1>
+      <h1>Apartments Marketplace!!!!!!!!!</h1>
       <div className="container">
         <h2>&#129297; Create a new rent</h2>
         <ApartmentForm fetchApartments={fetchApartments} />
