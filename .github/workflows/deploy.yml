@@ -1,0 +1,52 @@
+name: Deploy to Dev
+
+on:
+  push:
+    branches: [dev, main]
+  workflow_dispatch:
+
+jobs:
+  test_and_deploy:
+    runs-on: ubuntu-latest
+
+    environment: "${{ 
+      fromJson('{
+        \"main\": \"prod\", 
+      }')[github.ref_name] 
+    }}"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build Docker Image
+        run: docker build . -t ${{ vars.IMAGE_TAG }}:latest
+      - name: Run Tests in Docker
+        run: docker run -e CI=true --rm ${{ vars.IMAGE_TAG }}:latest npm test
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Push Docker Image
+        run: docker push ${{ vars.IMAGE_TAG }}:latest
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          script: |
+            docker pull ${{ vars.IMAGE_TAG }}:latest
+            docker stop ${{ vars.CONTAINER_NAME }} || true
+            docker rm ${{ vars.CONTAINER_NAME }} || true
+            docker run -d \
+              --name ${{ vars.CONTAINER_NAME }} \
+              -p ${{ vars.VPS_PORT }}:${{ vars.APP_PORT }} \
+              -e DB_HOST=${{ vars.DB_HOST }} \
+              -e DB_PORT=${{ vars.DB_PORT }} \
+              -e DB_USERNAME=${{ vars.DB_USERNAME }} \
+              -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+              -e DB_NAME=${{ vars.DB_NAME }} \
+              -e APP_PORT=${{ vars.APP_PORT }} \
+              ${{ vars.IMAGE_TAG }}:latest
