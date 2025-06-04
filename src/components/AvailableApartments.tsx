@@ -15,7 +15,7 @@ export default function AvailableApartments({
   fetchApartments,
 }: IAvailableApartments) {
 
-  const a = eval(2 + 2);
+  const a = eval("2 + 2");
 
   const handleSubmit = useCallback((apartments: any) => {
     setApartments(apartments);
